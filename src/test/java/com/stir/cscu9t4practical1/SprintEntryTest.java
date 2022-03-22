@@ -139,8 +139,8 @@ public class SprintEntryTest {
     public void testGetRepetitions() {
         System.out.println("getRepetitions");
         Entry instance = new SprintEntry("Alice", 1, 2, 2003, 0, 16, 7, 300, 4, 2);
-        int expResults = 4;
-        int result = instance.getRepetitions();
+        int expResult = 4;
+        int result = ((SprintEntry) instance).getRepetitions();
         assertEquals(expResult, result);
     }
     
@@ -151,8 +151,8 @@ public class SprintEntryTest {
     public void testGetRecovery() {
         System.out.println("getRepetitions");
         Entry instance = new SprintEntry("Alice", 1, 2, 2003, 0, 16, 7, 300, 4, 2);
-        int expResults = 2;
-        int result = instance.getRecovery();
+        int expResult = 2;
+        int result = ((SprintEntry) instance).getRecovery();
         assertEquals(expResult, result);
     }
 
