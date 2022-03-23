@@ -92,7 +92,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
             message = lookupEntry();
         }
         if (event.getSource() == findAllByDate) {
-            message = "Not implemented yet";
+            message = findAllByDate();
         }
         outputArea.setText(message);
         blankDisplay();
@@ -101,16 +101,30 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     public String addEntry(String what) {
         String message = "Record added\n";
         System.out.println("Adding "+what+" entry to the records");
-        String n = name.getText();
-        int m = Integer.parseInt(month.getText());
-        int d = Integer.parseInt(day.getText());
-        int y = Integer.parseInt(year.getText());
-        float km = java.lang.Float.parseFloat(dist.getText());
-        int h = Integer.parseInt(hours.getText());
-        int mm = Integer.parseInt(mins.getText());
-        int s = Integer.parseInt(secs.getText());
-        Entry e = new Entry(n, d, m, y, h, mm, s, km);
-        myAthletes.addEntry(e);
+        int m, d, y, h, mm, s;
+        float km;
+        String n = "";
+        try {
+            m = Integer.parseInt(month.getText());
+            d = Integer.parseInt(day.getText());
+            y = Integer.parseInt(year.getText());
+            km = java.lang.Float.parseFloat(dist.getText());
+            h = Integer.parseInt(hours.getText());
+            mm = Integer.parseInt(mins.getText());
+            s = Integer.parseInt(secs.getText());
+            n = name.getText();
+            Entry e = new Entry(n, d, m, y, h, mm, s, km);
+            myAthletes.addEntry(e);
+        }
+        catch (NumberFormatException nfe){
+            System.err.println("Wrong input");
+            JOptionPane.showMessageDialog(null, "Day, month, year, hour, minute, second must be integers! \nKm must be float");
+            message = "Input error. Insert data again";
+        }
+        if (n.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Empty field. Please enter a name");
+            message = "Input error. Insert data again";
+        }
         return message;
     }
     
@@ -120,6 +134,15 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         int y = Integer.parseInt(year.getText());
         outputArea.setText("looking up record ...");
         String message = myAthletes.lookupEntry(d, m, y);
+        return message;
+    }
+
+    public String findAllByDate() {
+        int m = Integer.parseInt(month.getText());
+        int d = Integer.parseInt(day.getText());
+        int y = Integer.parseInt(year.getText());
+        outputArea.setText("looking up record ...");
+        String message = myAthletes.findAllByDate(d, m, y);
         return message;
     }
 
