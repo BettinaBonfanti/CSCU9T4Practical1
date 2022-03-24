@@ -13,4 +13,5 @@ public class SwimEntry extends Entry {
     public void setWhere(String where) {
         this.where = where;
     }
+
 }

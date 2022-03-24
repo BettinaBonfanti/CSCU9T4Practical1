@@ -17,6 +17,17 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     private JTextField mins = new JTextField(2);
     private JTextField secs = new JTextField(2);
     private JTextField dist = new JTextField(4);
+    private JTextField terrain = new JTextField(10);
+    private JTextField tempo = new JTextField(4);
+    private JTextField repetition = new JTextField(3);
+    private JTextField recovery= new JTextField(3);
+    private JTextField where = new JTextField(10);
+    private JLabel labrec = new JLabel(" Recovery:");
+    private JLabel labrep = new JLabel(" Repetitions:");
+    private JLabel labter = new JLabel(" Terrain:");
+    private JLabel labtem = new JLabel(" Tempo:");
+    private JLabel labw = new JLabel(" Location:");
+
     private JLabel labn = new JLabel(" Name:");
     private JLabel labd = new JLabel(" Day:");
     private JLabel labm = new JLabel(" Month:");
@@ -28,6 +39,13 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     private JButton addR = new JButton("Add");
     private JButton lookUpByDate = new JButton("Look Up");
     private JButton findAllByDate = new JButton("Find All By Date");
+
+
+    private JMenuBar sessions = new JMenuBar();
+    private JMenu trainingSession = new JMenu("Training Session");
+    private JMenuItem swim = new JMenuItem("Swim");
+    private JMenuItem sprint = new JMenuItem("Sprint");
+    private JMenuItem cycle = new JMenuItem("Cycle");
 
     private TrainingRecord myAthletes = new TrainingRecord();
 
@@ -41,6 +59,17 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     public TrainingRecordGUI() {
         super("Training Record");
         setLayout(new FlowLayout());
+
+        swim.addActionListener(this);
+        trainingSession.add(swim);
+        sprint.addActionListener(this);
+        trainingSession.add(sprint);
+        cycle.addActionListener(this);
+        trainingSession.add(cycle);
+        sessions.add(trainingSession);
+        add(sessions);
+        sessions.setEnabled(true);
+
         add(labn);
         add(name);
         name.setEditable(true);
@@ -65,6 +94,33 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         add(labdist);
         add(dist);
         dist.setEditable(true);
+
+        add(labrec);
+        add(recovery);
+        labrec.setVisible(false);
+        recovery.setVisible(false);
+        recovery.setEditable(true);
+        add(labrep);
+        add(repetition);
+        labrep.setVisible(false);
+        repetition.setVisible(false);
+        repetition.setEditable(true);
+        add(labter);
+        add(terrain);
+        labter.setVisible(false);
+        terrain.setVisible(false);
+        terrain.setEditable(true);
+        add(labtem);
+        add(tempo);
+        labtem.setVisible(false);
+        tempo.setVisible(false);
+        tempo.setEditable(true);
+        add(labw);
+        add(where);
+        labw.setVisible(false);
+        where.setVisible(false);
+        where.setEditable(true);
+
         add(addR);
         addR.addActionListener(this);
         add(lookUpByDate);
@@ -73,7 +129,8 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         findAllByDate.addActionListener(this);
         add(outputArea);
         outputArea.setEditable(false);
-        setSize(720, 200);
+
+        setSize(800, 400);
         setVisible(true);
         blankDisplay();
 
@@ -94,6 +151,22 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         if (event.getSource() == findAllByDate) {
             message = findAllByDate();
         }
+        if (event.getSource() == swim){
+            labw.setVisible(true);
+            where.setVisible(true);
+        }
+        if (event.getSource() == sprint){
+            labrep.setVisible(true);
+            repetition.setVisible(true);
+            labrec.setVisible(true);
+            recovery.setVisible(true);
+        }
+        if (event.getSource() == cycle){
+            labtem.setVisible(true);
+            tempo.setVisible(true);
+            labter.setVisible(true);
+            terrain.setVisible(true);
+        }
         outputArea.setText(message);
         blankDisplay();
     } // actionPerformed
@@ -104,6 +177,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         int m, d, y, h, mm, s;
         float km;
         String n = "";
+        Entry entry;
         try {
             m = Integer.parseInt(month.getText());
             d = Integer.parseInt(day.getText());
@@ -113,8 +187,25 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
             mm = Integer.parseInt(mins.getText());
             s = Integer.parseInt(secs.getText());
             n = name.getText();
-            Entry e = new Entry(n, d, m, y, h, mm, s, km);
-            myAthletes.addEntry(e);
+            switch (what) {
+                case "cycle":
+                    String ter = terrain.getText();
+                    String tem = tempo.getText();
+                    entry = new CycleEntry(n, d, m, y, h, mm, s, km, ter, tem);
+                    break;
+                case "sprint":
+                    int rep = Integer.parseInt(repetition.getText());
+                    int rec = Integer.parseInt(recovery.getText());
+                    entry = new SprintEntry(n, d, m, y, h, mm, s, km, rep, rec);
+                    break;
+                case "swim":
+                    String wr = where.getText();
+                    entry = new SwimEntry(n, d, m, y, h, mm, s, km, wr);
+                    break;
+                default:
+                    entry = new Entry(n, d, m, y, h, mm, s, km);
+            }
+            myAthletes.addEntry(entry);
         }
         catch (NumberFormatException nfe){
             System.err.println("Wrong input");
@@ -125,6 +216,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "Empty field. Please enter a name");
             message = "Input error. Insert data again";
         }
+
         return message;
     }
     
@@ -155,6 +247,11 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         mins.setText("");
         secs.setText("");
         dist.setText("");
+        where.setText("");
+        repetition.setText("");
+        recovery.setText("");
+        terrain.setText("");
+        tempo.setText("");
 
     }// blankDisplay
     // Fills the input fields on the display for testing purposes only
