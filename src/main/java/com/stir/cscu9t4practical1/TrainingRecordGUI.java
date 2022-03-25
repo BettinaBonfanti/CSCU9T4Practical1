@@ -41,6 +41,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     private JButton lookUpByDate = new JButton("Look Up");
     private JButton findAllByDate = new JButton("Find All By Date");
     private JButton remove = new JButton("Remove entry");
+    private JButton findByName = new JButton("Find by name");
 
     String[] training = {"Generic", "Swim", "Cycle", "Sprint"};
     private JComboBox trainingType = new JComboBox(training);
@@ -121,6 +122,8 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         findAllByDate.addActionListener(this);
         add(remove);
         remove.addActionListener(this);
+        add(findByName);
+        findByName.addActionListener(this);
         add(outputArea);
         outputArea.setEditable(false);
 
@@ -152,12 +155,15 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         if(event.getSource() == remove){
             message = removeEntry();
         }
+        if(event.getSource()==findByName){
+            message = findByName();
+        }
         outputArea.setText(message);
         blankDisplay();
     } // actionPerformed
 
     public String addEntry(String what) {
-        String message = "Record added\n";
+        String message = "";
         System.out.println("Adding "+what+" entry to the records");
         int m, d, y, h, mm, s, rep, rec;
         float km;
@@ -178,8 +184,8 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
                     tem = tempo.getText();
                     entry = new CycleEntry(n, d, m, y, h, mm, s, km, ter, tem);
                     if (tem.isEmpty() || ter.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Text field(s) must be filled in.\nPlease enter data again");
-                        message = "Input error. Insert data again";
+                        //JOptionPane.showMessageDialog(null, "Text field(s) must be filled in.\nPlease enter data again");
+                        message = message + "Terrain and Tempo field(s) must be filled in\n";
                     }
                     break;
                 case "Sprint":
@@ -191,26 +197,26 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
                     wr = where.getText();
                     entry = new SwimEntry(n, d, m, y, h, mm, s, km, wr);
                     if (wr.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Location field must be filled in.\nPlease enter data again");
-                        message = "Input error. Insert data again";
+                        //JOptionPane.showMessageDialog(null, "Location field must be filled in.\nPlease enter data again");
+                        message = message + "Location field must be filled in\n";
                     }
                     break;
                 case "Generic":
                     entry = new Entry(n, d, m, y, h, mm, s, km);
             }
-            myAthletes.addEntry(entry);
         }
         catch (NumberFormatException nfe){
             System.err.println("Wrong input");
-            JOptionPane.showMessageDialog(null, "Wrong number format or empty cells.\nPlease enter data again");
-            message = "Input error. Insert data again";
+            //JOptionPane.showMessageDialog(null, "Wrong number format or empty cells.\nPlease enter data again");
+            message = message + "Input format error. Insert data again\n";
         }
         if (n.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Name field must be filled in.\nPlease enter data again");
-            message = "Input error. Insert data again";
+            //JOptionPane.showMessageDialog(null, "Name field must be filled in.\nPlease enter data again");
+            message = message + "Name field must be filled in\n";
         }
+        message = myAthletes.addEntry(entry);
+        return message ;
 
-        return message;
     }
     
     public String lookupEntry() {
@@ -241,6 +247,13 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         return message;
     }
 
+    public String findByName() {
+        String n = name.getText();
+        outputArea.setText("looking up record ...");
+        String message = myAthletes.findByName(n);
+        return message;
+    }
+
     public void blankDisplay() {
         name.setText("");
         day.setText("");
@@ -267,16 +280,16 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         mins.setText(String.valueOf(ent.getMin()));
         secs.setText(String.valueOf(ent.getSec()));
         dist.setText(String.valueOf(ent.getDistance()));
-        if ((String) trainingType.getSelectedItem() == "Cycle"){
+        if (trainingType.getSelectedItem()=="Cycle"){
             CycleEntry cycle = (CycleEntry) ent;
             terrain.setText(String.valueOf(cycle.getTerrain()));
             tempo.setText(String.valueOf(cycle.getTempo()));
         }
-        if ((String) trainingType.getSelectedItem() == "Swim"){
+        if (trainingType.getSelectedItem() == "Swim"){
             SwimEntry swim = (SwimEntry) ent;
             where.setText(String.valueOf(swim.getWhere()));
         }
-        if ((String) trainingType.getSelectedItem() == "Sprint"){
+        if (trainingType.getSelectedItem() == "Sprint"){
             SprintEntry sprint = (SprintEntry) ent;
             repetition.setText(String.valueOf(sprint.getRepetitions()));
             recovery.setText(String.valueOf(sprint.getRecovery()));

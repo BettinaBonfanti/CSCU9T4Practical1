@@ -115,18 +115,4 @@ public class TrainingRecordGUITest {
         }
         assertEquals(found,expectedFields.length,"Have you added all required buttons?");
     }
-    @Test
-    public void testFindAllByDate(){
-        System.out.println("Check if system finds all entries by date");
-        TrainingRecordGUI instance = new TrainingRecordGUI();
-        Entry entry = new SwimEntry("Alice", 1, 2, 2003, 0, 30, 7, 4, "outdoor");
-        Entry entry1 = new Entry("Helen", 1, 2, 2003, 0, 16, 7, 3);
-        instance.fillDisplay(entry);
-        instance.fillDisplay(entry1);
-        TrainingRecord check = new TrainingRecord();
-        String message = check.findAllByDate(1,2,2003);
-        System.out.println(message);
-        assertEquals(message,"Alice swam 4 km in 0:30:7 on 1/2/2003. Location: outdoor\n" +
-                "Helen ran 3 km in 0:16:7 on 1/2/2003");
-    }
 }
