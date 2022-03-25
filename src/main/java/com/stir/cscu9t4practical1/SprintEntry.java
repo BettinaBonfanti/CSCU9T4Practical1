@@ -20,8 +20,14 @@ public class SprintEntry extends Entry {
     public void setRecovery(int recovery) {
         this.recovery = recovery;
     }
-
     public int getRecovery() {
         return recovery;
+    }
+
+    public String getEntry () {
+        String result = getName()+" sprinted " + getDistance() + " km in "
+                +getHour()+":"+getMin()+":"+ getSec() +" for " + getRepetitions() + " rep, with "+ getRecovery() +
+                " min of recovery" + " on " +getDay()+"/"+getMonth()+"/"+getYear()+"\n";
+        return result;
     }
 }

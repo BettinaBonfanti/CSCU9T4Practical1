@@ -13,5 +13,11 @@ public class SwimEntry extends Entry {
     public void setWhere(String where) {
         this.where = where;
     }
-
+    @Override
+    public String getEntry () {
+        String result = getName()+" swam " + getDistance() + " km in "
+                +getHour()+":"+getMin()+":"+ getSec() + " on "
+                +getDay()+"/"+getMonth()+"/"+getYear()+ ". Location:" + getWhere() + "\n";
+        return result;
+    }
 }

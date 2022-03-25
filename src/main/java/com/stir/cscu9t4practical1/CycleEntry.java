@@ -24,6 +24,12 @@ public class CycleEntry extends Entry {
     public void setTerrain(String terrain) {
         this.terrain = terrain;
     }
-
+    @Override
+    public String getEntry () {
+        String result = getName()+" cycled " + getDistance() + " km in "
+                +getHour()+":"+getMin()+":"+ getSec() + " on " + getTerrain() + " with tempo of "+ getTempo() +
+                " on " + getDay()+"/"+getMonth()+"/"+getYear() + "\n";
+        return result;
+    }
 
 }
