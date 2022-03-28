@@ -42,6 +42,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     private JButton findAllByDate = new JButton("Find All By Date");
     private JButton remove = new JButton("Remove entry");
     private JButton findByName = new JButton("Find by name");
+    private JButton weeklyDistance = new JButton("Weekly distance");
 
     String[] training = {"Generic", "Swim", "Cycle", "Sprint"};
     private JComboBox trainingType = new JComboBox(training);
@@ -124,6 +125,8 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         remove.addActionListener(this);
         add(findByName);
         findByName.addActionListener(this);
+        add(weeklyDistance);
+        weeklyDistance.addActionListener(this);
         add(outputArea);
         outputArea.setEditable(false);
 
@@ -157,6 +160,9 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         }
         if(event.getSource()==findByName){
             message = findByName();
+        }
+        if(event.getSource()==weeklyDistance){
+            message = weeklyDistance();
         }
         outputArea.setText(message);
         blankDisplay();
@@ -251,6 +257,13 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         String n = name.getText();
         outputArea.setText("looking up record ...");
         String message = myAthletes.findByName(n);
+        return message;
+    }
+
+    public String weeklyDistance() {
+        String n = name.getText();
+        outputArea.setText("looking up record ...");
+        String message = myAthletes.weeklyDistance(n);
         return message;
     }
 

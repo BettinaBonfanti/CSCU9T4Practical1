@@ -2,6 +2,9 @@
 package com.stir.cscu9t4practical1;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
 public class Entry {
   private String name;
   private Calendar dateAndTime;
@@ -54,5 +57,22 @@ public class Entry {
              +getDay()+"/"+getMonth()+"/"+getYear()+"\n";
    return result;
   } //getEntry
-   
+
+  public int getCurrentDay(){
+    Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+    int day = calendar.get(Calendar.DATE);
+    return day;
+  }
+
+  public int getCurrentMonth(){
+    Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+    int month = calendar.get(Calendar.MONTH);
+    return month;
+  }
+
+  public int getCurrentYear(){
+    Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+    int year = calendar.get(Calendar.YEAR);
+    return year;
+  }
 } // Entry

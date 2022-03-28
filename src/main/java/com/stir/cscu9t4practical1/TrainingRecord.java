@@ -73,6 +73,7 @@ public class TrainingRecord {
         }
         return result;
     }
+
     public String removeEntry (int d, int m, int y, String name) {
         ListIterator<Entry> iter = tr.listIterator();
         String result = "";
@@ -88,6 +89,29 @@ public class TrainingRecord {
         }
         return result;
     }
+    public String weeklyDistance (String name) {
+        ListIterator<Entry> iter = tr.listIterator();
+        float result = 0;
+        String weeklyDistance = "";
+        if (!iter.hasNext()){
+            result = 0;
+        }
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        cal.add(Calendar.DATE, -7);
+        Calendar weekAgo = cal;
+        for (Calendar currentDay = Calendar.getInstance(TimeZone.getDefault()); currentDay.after(weekAgo); currentDay.add(Calendar.DATE, -1)){
+            while (iter.hasNext()) {
+                Entry current = iter.next();
+                if (current.getName().equalsIgnoreCase(name) && current.getDay()==currentDay.get(Calendar.DATE)
+                        && current.getMonth()==currentDay.get(Calendar.MONTH) && current.getYear()==currentDay.get(Calendar.YEAR)) {
+                    result = result + current.getDistance();
+                }
+            }
+        }
+        weeklyDistance = name + " weekly distance is: " + result;
+        return weeklyDistance;
+    }
+
     public String findByName (String name) {
         ListIterator<Entry> iter = tr.listIterator();
         String result = "";
