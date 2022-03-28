@@ -283,6 +283,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         tempo.setText("");
 
     }// blankDisplay
+
     // Fills the input fields on the display for testing purposes only
     public void fillDisplay(Entry ent) {
         name.setText(ent.getName());

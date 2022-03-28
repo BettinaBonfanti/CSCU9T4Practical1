@@ -89,20 +89,24 @@ public class TrainingRecord {
         }
         return result;
     }
+    //get current date and decrease day until 7 days before
     public String weeklyDistance (String name) {
         ListIterator<Entry> iter = tr.listIterator();
         float result = 0;
         String weeklyDistance = "";
-        if (!iter.hasNext()){
+        if (!iter.hasNext()){ //in case the list is empty
             result = 0;
         }
-        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-        cal.add(Calendar.DATE, -7);
-        Calendar weekAgo = cal;
-        for (Calendar currentDay = Calendar.getInstance(TimeZone.getDefault()); currentDay.after(weekAgo); currentDay.add(Calendar.DATE, -1)){
+        /**didn't have time to implement the method properly*/
+        //assign the date of one week ago to a Calendar object
+        Calendar weekAgo = Calendar.getInstance();
+        weekAgo.add(Calendar.DAY_OF_MONTH, -7);
+        //loop over the last 7 days, decrease by one day every time
+        for (Calendar currentDay = Calendar.getInstance(TimeZone.getDefault()); currentDay.after(weekAgo); currentDay.add(Calendar.DAY_OF_MONTH, -1)){
             while (iter.hasNext()) {
                 Entry current = iter.next();
-                if (current.getName().equalsIgnoreCase(name) && current.getDay()==currentDay.get(Calendar.DATE)
+                //check if a given athlete has record on the current date, if so it sum up all distances found
+                if (current.getName().equalsIgnoreCase(name) && current.getDay()==currentDay.get(Calendar.DAY_OF_MONTH)
                         && current.getMonth()==currentDay.get(Calendar.MONTH) && current.getYear()==currentDay.get(Calendar.YEAR)) {
                     result = result + current.getDistance();
                 }
